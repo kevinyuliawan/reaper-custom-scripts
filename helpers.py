@@ -1,5 +1,9 @@
 from reaper_python import * 
 from sws_python import * 
+from state import State
+
+# false = False
+# true = True
 
 def sendMsg(m, *args):
 	temp = ""
@@ -61,3 +65,6 @@ def getName(region):
 def getCurrentName(): #convenience method
 	return getName(findRegion(getCurrentLoop(True)[2],getCurrentLoop(True)[3]))
 
+def moveCursor(): #move cursor to end of time range even if you pressed space bar to stop recording
+    t2 = RPR_GetSet_LoopTimeRange(False, False,0,0,False)[3]
+    RPR_SetEditCurPos(t2, False, False)
