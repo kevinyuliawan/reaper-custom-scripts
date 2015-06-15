@@ -29,16 +29,16 @@ def waitAction():
             if found:
                 win32gui.TranslateMessage(msg);
                 win32gui.DispatchMessage(msg);
-        RPR_Main_OnCommand(40667, 0)#stop and save once you get to the end
+        command(40667)#stop and save once you get to the end
 
 
     
-RPR_Main_OnCommand(40635, 0) #remove current time selection
-RPR_Main_OnCommand(40839, 0) #move edit cursor forward one measure (if you're at the start of the region, this ensures you're ahead of it)
-RPR_Main_OnCommand(53101, 0) #SWS: go to/select previous marker/region
-RPR_Main_OnCommand(1013, 0) #transport record
+command(40635) #remove current time selection
+command(40839) #move edit cursor forward one measure (if you're at the start of the region, this ensures you're ahead of it)
+command(53101) #SWS: go to/select previous marker/region
+command(1013) #transport record
 State.set(record="1",playstop="1",song=getCurrentName()); State.broadcast();
 waitAction()
 if Stopped.manual == False: #only move if you didn't manually stop it (i.e. during practice and you stop, don't go to the next song)
-    RPR_Main_OnCommand(53100, 0) #SWS: go to/select next marker/region
+    command(53100) #SWS: go to/select next marker/region
 State.set(record="0",playstop="0",song=getCurrentName()); State.broadcast();

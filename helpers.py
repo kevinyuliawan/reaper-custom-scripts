@@ -11,6 +11,15 @@ def sendMsg(m, *args):
 		temp+= " " + str(arg)
 	RPR_ShowConsoleMsg(str(m)+ temp + "\n")
 
+def command(commandNumber):
+	RPR_Main_OnCommand(commandNumber, 0)
+
+def stop():
+	RPR_OnStopButton();
+
+def play():
+	RPR_OnPlayButton();
+
 def playState(): #parse the playState
 	cur = RPR_GetPlayState()
 	if cur == 0:	

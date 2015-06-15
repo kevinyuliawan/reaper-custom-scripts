@@ -3,11 +3,10 @@ from helpers import *
 State.song = getCurrentName()
 
 if playState() and playState() == "playing" or playState() == "recording":
-	RPR_OnStopButton();
+	stop();
 	State.set(record="0",playstop="0")
 else:
-	RPR_OnPlayButton()
+	play();
 	State.set(record="0",playstop="1")
-
 
 State.broadcast()
