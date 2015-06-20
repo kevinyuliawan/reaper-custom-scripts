@@ -1,9 +1,25 @@
 from reaper_python import * 
 from sws_python import * 
 from state import State
+import math
 
 # false = False
 # true = True
+
+project = RPR_EnumProjects(-1, None, 1)[0] #return current project
+
+armTracks = {
+	"ky vocals": 8,
+	"wy vocals": 9,
+	"live guitar": 14,
+	"drums vst": 23
+}
+
+def beginUndo():
+	RPR_Undo_BeginBlock2(project)
+
+def endUndo(description):
+	RPR_Undo_EndBlock2(0,description,-1)
 
 def sendMsg(m, *args):
 	temp = ""
@@ -34,8 +50,6 @@ def playState(): #parse the playState
 		return "record paused" #??? http://wiki.cockos.com/wiki/index.php/RPR_GetPlayStateEx
 	else:
 		return False
-
-project = RPR_EnumProjects(-1, None, 1)[0] #return current project
 
 def getCurrentLoop(full=False): #returns tBeginning and tEnd of current selection
 	if full:
@@ -77,3 +91,35 @@ def getCurrentName(): #convenience method
 def moveCursor(): #move cursor to end of time range even if you pressed space bar to stop recording
     t2 = RPR_GetSet_LoopTimeRange(False, False,0,0,False)[3]
     RPR_SetEditCurPos(t2, False, False)
+
+def getTrack(number):
+	return RPR_GetTrack(0,number)
+
+def getTrackOffset(number):
+	return RPR_GetTrack(0,number-1)
+
+def getTrackKy():
+	return RPR_GetTrack(0, 2)
+
+def getTrackWy():
+	return RPR_GetTrack(0,3)
+
+def changeVolume(track,amount):
+	D_VOL = RPR_GetMediaTrackInfo_Value(track, "D_VOL") #current volume
+	# Convert volume to dB units
+	Volume_dB = (20 * math.log(D_VOL)) / math.log(10)
+
+	# Change volume by amount
+	Volume_dB = Volume_dB + amount;
+
+	# Convert dB value back to power ratio
+	D_VOL = 10 ** (Volume_dB / 20)
+
+	# Set new volume value for current track
+	RPR_SetMediaTrackInfo_Value(track, "D_VOL", D_VOL)
+
+def clearAllArmed():
+	RPR_ClearAllRecArmed()
+
+def armRecord(track):
+	RPR_SetMediaTrackInfo_Value(track, "I_RECARM", 1)
