@@ -3,6 +3,8 @@ from sws_python import *
 from state import State
 import math
 
+
+
 # false = False
 # true = True
 
@@ -12,8 +14,10 @@ armTracks = {
 	"ky vocals": 8,
 	"wy vocals": 9,
 	"live guitar": 14,
-	"drums vst": 23
+	"drums vst": 26
 }
+
+    
 
 def beginUndo():
 	RPR_Undo_BeginBlock2(project)

@@ -2,6 +2,7 @@ import win32gui
 import win32con
 import win32api
 import requests
+import time
 from helpers import *
 
 class Stopped:
@@ -32,7 +33,6 @@ def waitAction():
         command(40667)#stop and save once you get to the end
 
 
-    
 command(40635) #remove current time selection
 command(40839) #move edit cursor forward one measure (if you're at the start of the region, this ensures you're ahead of it)
 command(53101) #SWS: go to/select previous marker/region
@@ -41,4 +41,8 @@ State.set(record="1",playstop="1",song=getCurrentName()); State.broadcast();
 waitAction()
 if Stopped.manual == False: #only move if you didn't manually stop it (i.e. during practice and you stop, don't go to the next song)
     command(53100) #SWS: go to/select next marker/region
-State.set(record="0",playstop="0",song=getCurrentName()); State.broadcast();
+    win32api.keybd_event(win32con.VK_F1, 0, 0, 0)
+    time.sleep(0.1)
+    win32api.keybd_event(win32con.VK_F1, 0, win32con.KEYEVENTF_KEYUP, 0)
+
+#State.set(record="0",playstop="0",song=getCurrentName()); State.broadcast();
